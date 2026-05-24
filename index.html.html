@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pawntrix — Every Move. Every Second.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#3B5BF6;
+  --blue-dim:#6B82F8;
+  --blue-bg:#EEF1FF;
+  --gold:#C8A96E;
+  --dark:#0B1340;
+  --muted:#5A6A9A;
+  --white:#FFFFFF;
+  --bdr:rgba(59,91,246,0.13);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--blue-bg);color:var(--dark);font-family:'Outfit',sans-serif;font-weight:300;overflow-x:hidden}
+
+nav{
+  height:64px;padding:0 56px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(255,255,255,0.95);
+  border-bottom:1px solid var(--bdr);
+  position:sticky;top:0;z-index:100;
+}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-box{
+  width:34px;height:34px;background:var(--blue);border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+}
+.logo-name{font-size:20px;font-weight:900;letter-spacing:-0.01em;color:var(--dark)}
+.nav-pill{
+  background:var(--blue);color:#fff;
+  font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;
+  padding:7px 16px;border-radius:20px;
+}
+
+/* ── HERO ── */
+.hero{
+  display:grid;grid-template-columns:1fr 1fr;
+  min-height:calc(100vh - 64px);
+  max-width:1180px;margin:0 auto;padding:0 56px;
+  gap:48px;align-items:center;
+}
+.hero-left{padding:60px 0}
+.hero-product-strip{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;max-width:430px;margin-top:34px;
+  opacity:0;animation:up 0.5s ease forwards 0.56s;
+}
+.hero-product-strip img{
+  display:block;width:100%;aspect-ratio:3/2;object-fit:cover;
+  border-radius:8px;border:1px solid rgba(59,91,246,0.12);
+  box-shadow:0 10px 34px rgba(59,91,246,0.14);
+  background:#fff;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:#fff;border:1px solid var(--bdr);border-radius:20px;
+  padding:5px 14px 5px 8px;font-size:12px;font-weight:500;color:var(--blue);
+  margin-bottom:28px;
+  opacity:0;animation:up 0.5s ease forwards 0.1s;
+}
+.bdot{width:7px;height:7px;background:var(--gold);border-radius:50%}
+.hero-h1{
+  font-size:clamp(64px,7vw,100px);font-weight:900;
+  line-height:0.9;letter-spacing:-0.025em;
+  text-transform:uppercase;color:var(--dark);
+  margin-bottom:24px;
+  opacity:0;animation:up 0.5s ease forwards 0.2s;
+}
+.hero-h1 .bl{color:var(--blue)}
+.hero-h1 .go{color:var(--gold)}
+.hero-p{
+  font-size:16px;line-height:1.8;color:var(--muted);
+  max-width:390px;margin-bottom:44px;
+  opacity:0;animation:up 0.5s ease forwards 0.32s;
+}
+.fwrap{opacity:0;animation:up 0.5s ease forwards 0.44s}
+.irow{display:flex;max-width:420px}
+.irow input{
+  flex:1;background:#fff;
+  border:1.5px solid var(--bdr);border-right:none;
+  color:var(--dark);font-family:'Outfit',sans-serif;
+  font-size:14px;font-weight:400;padding:14px 18px;
+  outline:none;border-radius:10px 0 0 10px;transition:border-color 0.2s;
+}
+.irow input::placeholder{color:#9BAACF}
+.irow input:focus{border-color:rgba(59,91,246,0.4)}
+.irow button{
+  background:var(--blue);color:#fff;
+  font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;
+  letter-spacing:0.04em;padding:14px 24px;
+  border:none;border-radius:0 10px 10px 0;
+  cursor:pointer;transition:background 0.15s;white-space:nowrap;
+}
+.irow button:hover{background:#2A47E0}
+.ferr{font-size:12px;color:#C04040;margin-top:8px}
+.fnote{font-size:12px;color:var(--muted);margin-top:10px}
+.fnote b{color:var(--blue);font-weight:600}
+.succ{display:none;padding:20px 0}
+.succ.on{display:block}
+.succ strong{font-size:24px;font-weight:900;color:var(--blue);display:block;margin-bottom:4px}
+.succ span{font-size:13px;color:var(--muted)}
+
+/* Hero right — product UI card */
+.hero-right{
+  display:flex;align-items:center;justify-content:center;padding:40px 0;
+  opacity:0;animation:up 0.6s ease forwards 0.55s;
+}
+.pcard{
+  background:#fff;border-radius:20px;
+  border:1px solid var(--bdr);
+  width:100%;max-width:320px;
+  overflow:hidden;
+  box-shadow:0 8px 48px rgba(59,91,246,0.12);
+}
+.pcard-top{
+  background:var(--blue);padding:24px 22px;text-align:center;
+}
+.demo-head h3{
+  color:#fff;font-size:22px;font-weight:900;line-height:1.05;
+  text-transform:uppercase;letter-spacing:0;margin-bottom:8px;
+}
+.demo-head p{
+  color:rgba(255,255,255,0.72);font-size:12px;font-weight:500;
+  line-height:1.45;
+}
+.pcard-body{padding:18px 22px}
+.mini-board{
+  display:grid;grid-template-columns:repeat(8,1fr);
+  gap:2px;border-radius:8px;overflow:hidden;margin-bottom:14px;
+}
+.sq{
+  aspect-ratio:1;border-radius:1px;border:0;padding:0;
+  position:relative;font:inherit;transition:transform 0.12s,box-shadow 0.12s;
+  display:flex;align-items:center;justify-content:center;
+}
+.sq.is-active,.sq.is-target,.sq.is-piece{cursor:pointer}
+.sq.is-active:hover,.sq.is-target:hover,.sq.is-piece:hover{transform:scale(0.96)}
+.sq.is-selected{box-shadow:inset 0 0 0 2px #fff,0 0 0 2px rgba(59,91,246,0.35);z-index:1}
+.sq.is-target::after{
+  content:'';width:10px;height:10px;border-radius:50%;
+  background:rgba(59,91,246,0.42);position:absolute;
+}
+.sq.is-capture{box-shadow:inset 0 0 0 2px rgba(232,53,53,0.62)}
+.sq.is-last{box-shadow:inset 0 0 0 2px rgba(200,169,110,0.72)}
+.piece{
+  font-size:23px;font-weight:900;line-height:1;
+  pointer-events:none;text-shadow:0 1px 1px rgba(11,19,64,0.18);
+}
+.piece.white{color:#fff;text-shadow:0 1px 2px rgba(11,19,64,0.85),1px 0 1px rgba(11,19,64,0.55),-1px 0 1px rgba(11,19,64,0.55)}
+.piece.black{color:#1F2B55}
+.alert-box{
+  background:#F5F7FF;border:1px solid rgba(59,91,246,0.18);
+  border-radius:10px;padding:10px 12px;
+  display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;
+}
+.alert-box.ok{background:#F5F7FF;border-color:rgba(59,91,246,0.18)}
+.alert-led{width:8px;height:8px;background:var(--blue);border-radius:50%;flex-shrink:0;margin-top:2px}
+.alert-title{font-size:12px;font-weight:700;color:var(--dark);margin-bottom:1px}
+.alert-desc{font-size:11px;color:var(--muted);font-weight:400}
+.alert-box.ok .alert-led{background:var(--blue)}
+.alert-box.ok .alert-title{color:var(--dark)}
+.alert-box.ok .alert-desc{color:var(--muted)}
+.ctrl-row{display:flex;gap:8px}
+.ctrl{
+  flex:1;background:var(--blue-bg);border:1px solid var(--bdr);
+  border-radius:8px;padding:8px 4px;
+  font-family:'Outfit',sans-serif;cursor:default;
+  font-size:10px;font-weight:700;color:var(--blue);
+  text-align:center;letter-spacing:0.06em;text-transform:uppercase;
+}
+button.ctrl{cursor:pointer}
+button.ctrl:hover{background:#E6EAFF}
+
+/* ── FEATURES ── */
+.features{background:#fff;padding:100px 56px}
+.features-inner{max-width:1100px;margin:0 auto}
+.sec-tag{
+  font-size:12px;font-weight:700;color:var(--blue);
+  text-transform:uppercase;letter-spacing:0.18em;
+  margin-bottom:14px;
+}
+.sec-title{
+  font-size:clamp(38px,4.5vw,60px);font-weight:900;
+  letter-spacing:-0.025em;line-height:1;
+  text-transform:uppercase;color:var(--dark);
+  margin-bottom:60px;
+}
+.sec-title span{color:var(--blue)}
+.fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.fc{
+  background:var(--blue-bg);border-radius:16px;
+  padding:30px 26px;border:1px solid var(--bdr);
+}
+.fc:hover{background:#E6EAFF}
+.fn{font-size:11px;font-weight:700;color:var(--blue);letter-spacing:0.15em;margin-bottom:14px;opacity:0.55}
+.ft{font-size:15px;font-weight:700;color:var(--dark);margin-bottom:10px;line-height:1.3}
+.fd{font-size:13px;color:var(--muted);line-height:1.75}
+
+.video-section{background:var(--blue-bg);padding:92px 56px}
+.video-wrap{max-width:900px;margin:0 auto}
+.video-wrap video{
+  display:block;width:100%;max-height:640px;object-fit:contain;
+  background:#050A24;border-radius:8px;
+  border:1px solid rgba(59,91,246,0.13);
+  box-shadow:0 18px 56px rgba(11,19,64,0.16);
+}
+
+/* ── SPECS ── */
+.sband{background:var(--dark);display:flex;flex-wrap:wrap}
+.sp{flex:1;min-width:160px;padding:48px 24px;border-right:1px solid rgba(255,255,255,0.08);text-align:center}
+.sp:last-child{border-right:none}
+.sv{font-size:44px;font-weight:900;letter-spacing:-0.03em;color:#fff;display:block;margin-bottom:6px}
+.sv .b{color:var(--blue-dim)}
+.sv .g{color:var(--gold)}
+.sk{font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3)}
+
+/* ── CTA ── */
+.cta{padding:120px 56px;text-align:center}
+.cta-inner{max-width:680px;margin:0 auto}
+.cta-title{
+  font-size:clamp(52px,7vw,92px);font-weight:900;
+  letter-spacing:-0.03em;line-height:0.92;
+  text-transform:uppercase;color:var(--dark);margin-bottom:20px;
+}
+.cta-title .bl{color:var(--blue)}
+.cta-sub{font-size:16px;color:var(--muted);max-width:380px;margin:0 auto 18px;line-height:1.75}
+.cta-badge{
+  display:inline-block;font-size:13px;font-weight:700;
+  color:var(--gold);background:rgba(200,169,110,0.1);
+  border:1px solid rgba(200,169,110,0.3);
+  border-radius:20px;padding:6px 18px;margin-bottom:40px;
+}
+.cta-row{display:flex;justify-content:center}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--dark);padding:24px 56px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+}
+.fb{font-size:18px;font-weight:900;letter-spacing:-0.01em;color:rgba(255,255,255,0.35)}
+.fcp{font-size:12px;color:rgba(255,255,255,0.2)}
+
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:900px){
+  nav{padding:0 20px}
+  .hero{grid-template-columns:1fr;padding:0 20px;gap:0}
+  .hero-right{display:flex;padding:0 0 52px}
+  .features{padding:72px 20px}
+  .video-section{padding:72px 20px}
+  .fgrid{grid-template-columns:1fr 1fr}
+  .cta{padding:80px 20px}
+  footer{padding:18px 20px}
+}
+@media(max-width:520px){
+  .hero-product-strip{grid-template-columns:1fr;gap:10px}
+  .fgrid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    <div class="logo-box">
+      <svg width="16" height="18" viewBox="0 0 16 18" fill="none" aria-hidden="true">
+        <circle cx="8" cy="5" r="4.2" stroke="#fff" stroke-width="1.1" fill="none"/>
+        <line x1="8" y1="5" x2="8" y2="2.4" stroke="#fff" stroke-width="1.1" stroke-linecap="round"/>
+        <line x1="8" y1="5" x2="10.2" y2="6.2" stroke="#fff" stroke-width="1.1" stroke-linecap="round"/>
+        <circle cx="8" cy="5" r="0.8" fill="#fff"/>
+        <rect x="6.5" y="9.2" width="3" height="2.2" rx="0.4" fill="#fff" opacity="0.75"/>
+        <rect x="4.2" y="11.4" width="7.6" height="2.2" rx="0.6" fill="#fff" opacity="0.75"/>
+        <rect x="2.5" y="13.6" width="11" height="2.2" rx="0.8" fill="#fff" opacity="0.75"/>
+      </svg>
+    </div>
+    <span class="logo-name">Pawntrix</span>
+  </div>
+  <span class="nav-pill">Coming to Kickstarter</span>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-badge"><span class="bdot"></span>Smart Chess Board</div>
+    <h1 class="hero-h1">
+      Every<br>
+      <span class="bl">Move.</span><br>
+      Every<br>
+      <span class="go">Second.</span>
+    </h1>
+    <p class="hero-p">The world's first chess board with a fully integrated smart clock — detecting illegal moves, enforcing rules, and tracking every second with machine precision.</p>
+    <div class="fwrap">
+      <div id="f1">
+        <div class="irow">
+          <input type="email" id="e1" placeholder="Your email address" autocomplete="email">
+          <button onclick="go(1)">Notify Me</button>
+        </div>
+        <p class="ferr" id="err1"></p>
+        <p class="fnote" id="fnote"></p>
+      </div>
+      <div class="succ" id="s1">
+        <strong>You're on the list.</strong>
+        <span>We'll notify you the moment Pawntrix goes live on Kickstarter.</span>
+      </div>
+    </div>
+    <div class="hero-product-strip" aria-label="Pawntrix product photos">
+      <img src="ChatGPT Image May 24, 2026, 03_46_10 PM.png" alt="Pawntrix smart chess board with clock on the left side">
+      <img src="ChatGPT Image May 24, 2026, 03_43_27 PM.png" alt="Pawntrix smart chess board with clock on the right side">
+    </div>
+  </div>
+
+  <div class="hero-right">
+      <div class="pcard">
+      <div class="pcard-top">
+        <div class="demo-head">
+          <h3>Interactive Smart Board Demo</h3>
+          <p id="demoSubline" aria-live="polite">Tap a piece to preview legal moves.</p>
+        </div>
+      </div>
+      <div class="pcard-body">
+        <div class="mini-board" id="board"></div>
+        <div class="alert-box" id="demoAlert">
+          <div class="alert-led"></div>
+          <div>
+            <div class="alert-title" id="demoTitle">Interactive Board</div>
+            <div class="alert-desc" id="demoDesc">Pick a white piece to see legal moves.</div>
+          </div>
+        </div>
+        <div class="ctrl-row">
+          <button class="ctrl" type="button" id="resetDemo">Reset</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features">
+  <div class="features-inner">
+    <p class="sec-tag">Smart by Design</p>
+    <h2 class="sec-title">Six Rules.<br><span>One Board.</span></h2>
+    <div class="fgrid">
+      <div class="fc">
+        <div class="fn">01</div>
+        <h3 class="ft">Illegal Move Detection</h3>
+        <p class="fd">The clock pauses the instant an illegal move is played and only resumes once the piece is correctly returned. No disputes. No guesswork.</p>
+      </div>
+      <div class="fc">
+        <div class="fn">02</div>
+        <h3 class="ft">Stalemate Recognition</h3>
+        <p class="fd">Pawntrix detects stalemate in real time and halts the clock automatically. The game ends precisely when it should.</p>
+      </div>
+      <div class="fc">
+        <div class="fn">03</div>
+        <h3 class="ft">Castling Enforcement</h3>
+        <p class="fd">The king must be picked up first — every time. Any attempt to castle by touching the rook is flagged immediately by the board.</p>
+      </div>
+      <div class="fc">
+        <div class="fn">04</div>
+        <h3 class="ft">Promotion Handling</h3>
+        <p class="fd">The clock keeps running through promotion until the pawn is removed and the new piece is placed. No free time, no shortcuts.</p>
+      </div>
+      <div class="fc">
+        <div class="fn">05</div>
+        <h3 class="ft">3-Fold Repetition</h3>
+        <p class="fd">Position tracking built right in. Pawntrix monitors repeated positions and enforces the draw rule automatically — no scoresheets needed.</p>
+      </div>
+      <div class="fc">
+        <div class="fn">06</div>
+        <h3 class="ft">Position Verification</h3>
+        <p class="fd">The clock won't start if a single piece is out of place. Every game begins correctly, because Pawntrix checks before you do.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:64px">
+      <p class="sec-tag">Hardware</p>
+      <h2 class="sec-title" style="margin-bottom:40px">Built to <span>Last.</span></h2>
+      <div class="fgrid" style="grid-template-columns:repeat(2,1fr)">
+        <div class="fc" style="display:flex;gap:22px;align-items:flex-start">
+          <div style="width:44px;height:44px;background:var(--blue);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="#fff" stroke-width="1.5"/><line x1="10" y1="5" x2="10" y2="10" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><line x1="10" y1="10" x2="13" y2="13" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <h3 class="ft">Play / Stop Button</h3>
+            <p class="fd">One dedicated button to start, pause, or stop the game clock at any point — clean and accessible during play.</p>
+          </div>
+        </div>
+        <div class="fc" style="display:flex;gap:22px;align-items:flex-start">
+          <div style="width:44px;height:44px;background:var(--blue);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="8" width="14" height="4" rx="2" stroke="#fff" stroke-width="1.5"/><line x1="10" y1="3" x2="10" y2="6" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><line x1="10" y1="14" x2="10" y2="17" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <h3 class="ft">Increment Button</h3>
+            <p class="fd">Add time increments on the fly. Supports Fischer and Bronstein time controls directly from the board with no app required.</p>
+          </div>
+        </div>
+        <div class="fc" style="display:flex;gap:22px;align-items:flex-start">
+          <div style="width:44px;height:44px;background:var(--blue);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 13 Q6 7 10 7 Q14 7 16 13" stroke="#fff" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="10" cy="14" r="2" stroke="#fff" stroke-width="1.5"/></svg>
+          </div>
+          <div>
+            <h3 class="ft">Volume Knob</h3>
+            <p class="fd">A physical on/off volume knob controls all audio alerts. Silence the board instantly without fumbling through menus mid-game.</p>
+          </div>
+        </div>
+        <div class="fc" style="display:flex;gap:22px;align-items:flex-start">
+          <div style="width:44px;height:44px;background:var(--blue);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="7" y="2" width="6" height="3" rx="1" stroke="#fff" stroke-width="1.3"/><rect x="4" y="5" width="12" height="13" rx="2" stroke="#fff" stroke-width="1.5"/><line x1="10" y1="9" x2="10" y2="13" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="11" x2="12" y2="11" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <h3 class="ft">USB-C + Battery Power</h3>
+            <p class="fd">Charge via USB-C at home or run on batteries anywhere. Pawntrix works at the club, at the park, or on the road — no outlets needed.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="video-section" aria-label="Pawntrix product video">
+  <div class="video-wrap">
+    <video controls playsinline preload="metadata" poster="ChatGPT Image May 24, 2026, 03_46_10 PM.png">
+      <source src="IMG_7038.MP4" type="video/mp4">
+    </video>
+  </div>
+</section>
+
+<div class="sband">
+  <div class="sp"><span class="sv">USB<span class="b">-C</span></span><span class="sk">+ Battery Power</span></div>
+  <div class="sp"><span class="sv"><span class="g">6</span></span><span class="sk">Smart Rules</span></div>
+  <div class="sp"><span class="sv">INC<span class="b">+</span></span><span class="sk">Increment Mode</span></div>
+  <div class="sp"><span class="sv"><span class="g">$</span>299</span><span class="sk">Early Backer Price</span></div>
+</div>
+
+<section class="cta">
+  <div class="cta-inner">
+    <h2 class="cta-title">Back It<br>Before It<br><span class="bl">Launches.</span></h2>
+    <p class="cta-sub">Join the waitlist and be first to know when Pawntrix goes live. Early backers lock in exclusive pricing.</p>
+    <span class="cta-badge">Early Backer Price — $299</span>
+    <div class="cta-row">
+      <div style="width:100%;max-width:400px">
+        <div id="f2">
+          <div class="irow">
+            <input type="email" id="e2" placeholder="Your email address" autocomplete="email">
+            <button onclick="go(2)">Join Waitlist</button>
+          </div>
+          <p class="ferr" id="err2"></p>
+        </div>
+        <div class="succ" id="s2">
+          <strong>You're on the list.</strong>
+          <span>We'll notify you the moment Pawntrix goes live on Kickstarter.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="fb">Pawntrix</span>
+  <span class="fcp">© 2026 Pawntrix. All rights reserved.</span>
+</footer>
+
+<script>
+(function(){
+  var b=document.getElementById('board');
+  if(!b)return;
+  var subline=document.getElementById('demoSubline');
+  var alertBox=document.getElementById('demoAlert');
+  var title=document.getElementById('demoTitle');
+  var desc=document.getElementById('demoDesc');
+  var reset=document.getElementById('resetDemo');
+  var selected=null;
+  var turn='white';
+  var lastMove=[];
+  var board=[];
+  var pieceNames={K:'king',Q:'queen',R:'rook',B:'bishop',N:'knight',P:'pawn'};
+  var symbols={
+    white:{K:'\u2654',Q:'\u2655',R:'\u2656',B:'\u2657',N:'\u2658',P:'\u2659'},
+    black:{K:'\u265A',Q:'\u265B',R:'\u265C',B:'\u265D',N:'\u265E',P:'\u265F'}
+  };
+
+  function setup(){
+    board=new Array(64).fill(null);
+    var order=['R','N','B','Q','K','B','N','R'];
+    for(var c=0;c<8;c++){
+      board[c]={type:order[c],side:'black'};
+      board[8+c]={type:'P',side:'black'};
+      board[48+c]={type:'P',side:'white'};
+      board[56+c]={type:order[c],side:'white'};
+    }
+    selected=null;
+    turn='white';
+    lastMove=[];
+    render();
+  }
+
+  function baseColor(i){
+    var row=Math.floor(i/8),col=i%8;
+    var light=(row+col)%2===0;
+    return light?'#E8EDFF':'#C0CCEE';
+  }
+
+  function squareName(i){
+    var files='abcdefgh';
+    return files[i%8]+(8-Math.floor(i/8));
+  }
+
+  function inBounds(r,c){return r>=0&&r<8&&c>=0&&c<8}
+  function sameSide(i,side){return board[i]&&board[i].side===side}
+  function enemy(i,side){return board[i]&&board[i].side!==side}
+
+  function addSlide(moves,from,side,dirs){
+    var r=Math.floor(from/8),c=from%8;
+    for(var d=0;d<dirs.length;d++){
+      var nr=r+dirs[d][0],nc=c+dirs[d][1];
+      while(inBounds(nr,nc)){
+        var to=nr*8+nc;
+        if(sameSide(to,side))break;
+        moves.push(to);
+        if(enemy(to,side))break;
+        nr+=dirs[d][0];nc+=dirs[d][1];
+      }
+    }
+  }
+
+  function legalMoves(from){
+    var p=board[from];
+    if(!p)return [];
+    var moves=[];
+    var r=Math.floor(from/8),c=from%8;
+    if(p.type==='P'){
+      var dir=p.side==='white'?-1:1;
+      var start=p.side==='white'?6:1;
+      var one=(r+dir)*8+c;
+      if(inBounds(r+dir,c)&&!board[one]){
+        moves.push(one);
+        var two=(r+dir*2)*8+c;
+        if(r===start&&!board[two])moves.push(two);
+      }
+      for(var dc=-1;dc<=1;dc+=2){
+        var cr=r+dir,cc=c+dc;
+        if(inBounds(cr,cc)&&enemy(cr*8+cc,p.side))moves.push(cr*8+cc);
+      }
+    }else if(p.type==='N'){
+      var jumps=[[2,1],[2,-1],[-2,1],[-2,-1],[1,2],[1,-2],[-1,2],[-1,-2]];
+      for(var j=0;j<jumps.length;j++){
+        var nr=r+jumps[j][0],nc=c+jumps[j][1];
+        if(inBounds(nr,nc)&&!sameSide(nr*8+nc,p.side))moves.push(nr*8+nc);
+      }
+    }else if(p.type==='B'){
+      addSlide(moves,from,p.side,[[1,1],[1,-1],[-1,1],[-1,-1]]);
+    }else if(p.type==='R'){
+      addSlide(moves,from,p.side,[[1,0],[-1,0],[0,1],[0,-1]]);
+    }else if(p.type==='Q'){
+      addSlide(moves,from,p.side,[[1,1],[1,-1],[-1,1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1]]);
+    }else if(p.type==='K'){
+      for(var dr=-1;dr<=1;dr++){
+        for(var dc2=-1;dc2<=1;dc2++){
+          if(!dr&&!dc2)continue;
+          var kr=r+dr,kc=c+dc2;
+          if(inBounds(kr,kc)&&!sameSide(kr*8+kc,p.side))moves.push(kr*8+kc);
+        }
+      }
+    }
+    return moves;
+  }
+
+  function setText(){
+    var side=turn.charAt(0).toUpperCase()+turn.slice(1);
+    alertBox.classList.add('ok');
+    if(selected!==null){
+      var p=board[selected];
+      subline.textContent=side+' '+pieceNames[p.type]+' selected.';
+      title.textContent=side+' '+pieceNames[p.type]+' selected';
+      desc.textContent='Choose one of the highlighted squares.';
+    }else if(lastMove.length){
+      subline.textContent=side+' to move - last move '+lastMove[0]+' to '+lastMove[1]+'.';
+      title.textContent='Move Played';
+      desc.textContent=lastMove[0]+' to '+lastMove[1]+'. '+side+' to move.';
+    }else{
+      subline.textContent='Tap a piece to preview legal moves.';
+      title.textContent='Interactive Board';
+      desc.textContent='Pick a white piece to see legal moves.';
+    }
+  }
+
+  function movePiece(from,to){
+    var p=board[from];
+    board[to]=p;
+    board[from]=null;
+    if(p.type==='P'&&(to<8||to>=56))board[to]={type:'Q',side:p.side};
+    lastMove=[squareName(from),squareName(to)];
+    selected=null;
+    turn=turn==='white'?'black':'white';
+    render();
+  }
+
+  function onSquare(i){
+    var p=board[i];
+    if(selected!==null){
+      var moves=legalMoves(selected);
+      if(moves.indexOf(i)>=0){
+        movePiece(selected,i);
+        return;
+      }
+      if(p&&p.side===turn){
+        selected=i;
+        render();
+        return;
+      }
+      selected=null;
+      render();
+      return;
+    }
+    if(p&&p.side===turn){
+      selected=i;
+      render();
+    }
+  }
+
+  function render(){
+    b.innerHTML='';
+    setText();
+    var moves=selected!==null?legalMoves(selected):[];
+    for(var i=0;i<64;i++){
+      var s=document.createElement('button');
+      var current=board[i];
+      s.type='button';
+      s.className='sq';
+      s.style.background=baseColor(i);
+      s.setAttribute('aria-label','Board square '+(i+1));
+      if(current){
+        var p=document.createElement('span');
+        p.className='piece '+current.side;
+        p.textContent=symbols[current.side][current.type];
+        s.appendChild(p);
+        s.classList.add('is-piece');
+        s.setAttribute('aria-label',(current.side+' '+pieceNames[current.type]+' on '+squareName(i)));
+      }
+      if(i===selected)s.classList.add('is-selected');
+      if(moves.indexOf(i)>=0){
+        s.classList.add('is-target');
+        if(current)s.classList.add('is-capture');
+        s.setAttribute('aria-label','Move to '+squareName(i));
+      }
+      if(lastMove.indexOf(squareName(i))>=0)s.classList.add('is-last');
+      s.addEventListener('click',(function(n){return function(){onSquare(n)}})(i));
+      s.draggable=!!(current&&current.side===turn);
+      s.addEventListener('dragstart',(function(n){return function(e){
+        if(!board[n]||board[n].side!==turn)return;
+        selected=n;
+        if(e.dataTransfer)e.dataTransfer.setData('text/plain','piece');
+        render();
+      }})(i));
+      s.addEventListener('dragover',(function(n){return function(e){
+        if(selected!==null&&legalMoves(selected).indexOf(n)>=0)e.preventDefault();
+      }})(i));
+      s.addEventListener('drop',(function(n){return function(e){
+        if(selected!==null&&legalMoves(selected).indexOf(n)>=0){
+          e.preventDefault();
+          movePiece(selected,n);
+        }
+      }})(i));
+      b.appendChild(s);
+    }
+  }
+  if(reset)reset.addEventListener('click',setup);
+  setup();
+})();
+
+function cnt(){try{return parseInt(localStorage.getItem('ptx')||'0')}catch(e){return 0}}
+function scnt(n){try{localStorage.setItem('ptx',String(n))}catch(e){}}
+(function(){var c=cnt(),el=document.getElementById('fnote');if(el&&c>0)el.innerHTML='<b>'+c+'</b> '+(c===1?'person':'people')+' already on the waitlist'})();
+
+function go(n){
+  var v=(document.getElementById('e'+n).value||'').trim();
+  var err=document.getElementById('err'+n);
+  err.textContent='';
+  if(!v){err.textContent='Please enter your email.';return}
+  if(!/\S+@\S+\.\S+/.test(v)){err.textContent='Please enter a valid email.';return}
+  scnt(cnt()+1);
+  document.getElementById('f'+n).style.display='none';
+  document.getElementById('s'+n).classList.add('on');
+  var el=document.getElementById('fnote');
+  if(el)el.innerHTML='<b>'+cnt()+'</b> '+(cnt()===1?'person':'people')+' already on the waitlist';
+}
+document.getElementById('e1').onkeydown=function(e){if(e.key==='Enter')go(1)};
+document.getElementById('e2').onkeydown=function(e){if(e.key==='Enter')go(2)};
+</script>
+</body>
+</html>
